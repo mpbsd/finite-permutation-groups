@@ -48,8 +48,8 @@ def Orbits(X, p):
 
 
 def PrettyPrint(X, orbits):
-    re_1 = re.compile(r"\[\[")
-    re_2 = re.compile(r"\]\]")
+    re_1 = re.compile(r"^\[\[")
+    re_2 = re.compile(r"\]\]$")
     re_3 = re.compile(r"\], \[")
     re_4 = re.compile(r"\([0-9]\)")
     re_5 = re.compile(r"^$")
@@ -63,7 +63,7 @@ def PrettyPrint(X, orbits):
 
 
 def main():
-    n = 3
+    n = 5
     X = list(range(n))
     G = SymmetricGroup(X)
     for p in G:
