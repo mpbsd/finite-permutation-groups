@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+from functools import reduce
 from itertools import permutations
 
 
@@ -62,8 +63,29 @@ def PrettyPrint(X, orbits):
     return representation
 
 
+def Signal(X, n, p):
+    Y = reduce(
+        lambda x, y: x * y,
+        [
+            reduce(lambda x, y: x * y, [X[j] - X[i] for j in range(i + 1, n)])
+            for i in range(n - 1)
+        ],
+    )
+    Z = reduce(
+        lambda x, y: x * y,
+        [
+            reduce(
+                lambda x, y: x * y,
+                [X[p[j]] - X[p[i]] for j in range(i + 1, n)],
+            )
+            for i in range(n - 1)
+        ],
+    )
+    return Z // Y
+
+
 def main():
-    n = 5
+    n = 4
     X = list(range(n))
     G = SymmetricGroup(X)
     for p in G:
@@ -72,6 +94,7 @@ def main():
             B = PrettyPrint(X, Orbits(X, q))
             C = PrettyPrint(X, Orbits(X, Product(X, p, q)))
             print("%s * %s = %s" % (A, B, C))
+        # print("%+d: %s" % (Signal(X, n, p), PrettyPrint(X, Orbits(X, p))))
 
 
 if __name__ == "__main__":
